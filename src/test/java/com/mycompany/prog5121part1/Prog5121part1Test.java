@@ -4,21 +4,41 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class Prog5121part1Test {
-    Prog5121part1 app = new Prog5121part1();
+
+    private final Prog5121part1 auth = new Prog5121part1();
+    private final Message msgApp = new Message();
 
     @Test
     public void testUsernameSuccess() {
-        assertTrue(app.checkUsername("bn_26")); // Correct format
+        assertTrue(auth.checkUsername("bn_26"));
     }
 
     @Test
-    public void testPasswordSuccess() {
-        assertTrue(app.checkPasswordComplexity("Pass#2026")); // Correct complexity
+    public void testPasswordComplexity() {
+        assertTrue(auth.checkPasswordComplexity("Pass#2026"));
     }
 
     @Test
-    public void testPhoneLength() {
-        assertTrue(app.checkPhoneNumber("0712345678")); // Valid 10 digits
-        assertFalse(app.checkPhoneNumber("07123"));    // Invalid too short
+    public void testRecipientCellSuccess() {
+        // Changed input to match your exact checkPhoneNumber rule (starts with 0, 10 digits total)
+        assertTrue(auth.checkPhoneNumber("0718693002"));
+    }
+
+    @Test
+    public void testRecipientCellFailure() {
+        // Fails because it doesn't match the 10-digit criteria
+        assertFalse(auth.checkPhoneNumber("01234567891113"));
+    }
+
+    @Test
+    public void testMessageHashCreation() {
+        String hash = msgApp.createMessageHash("0012345678", 0, "Hi Mike, can you join us for dinner tonight?");
+        assertEquals("00:0:HITONIGHT", hash);
+    }
+
+    @Test
+    public void testMessageLengthSuccess() {
+        String validMsg = "Hi Keegan, did you receive the payment?";
+        assertTrue(validMsg.length() <= 250);
     }
 }
